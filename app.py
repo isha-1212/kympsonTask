@@ -197,9 +197,9 @@ def rfq_detail(rfq_id):
 
         return "RFQ not found", 404
 
-    # --------------------------------
+  
     # ADD SUPPLIER QUOTE
-    # --------------------------------
+  
     if request.method == "POST":
 
         supplier_name = request.form.get(
@@ -253,9 +253,9 @@ def rfq_detail(rfq_id):
                 "Delivery days must be greater than 0."
             )
 
-        # --------------------------------
+      
         # VALIDATION FAILED
-        # --------------------------------
+      
         if errors:
 
             cursor.execute("""
@@ -278,9 +278,9 @@ def rfq_detail(rfq_id):
                 form=request.form
             )
 
-        # --------------------------------
+      
         # INSERT QUOTE
-        # --------------------------------
+    
         cursor.execute("""
             INSERT INTO quotes
             (
@@ -302,17 +302,15 @@ def rfq_detail(rfq_id):
         cursor.close()
         db.close()
 
-        # IMPORTANT:
-        # Redirect after POST so refreshing the page
-        # does NOT submit the quote again.
+     
         return redirect(url_for(
             "rfq_detail",
             rfq_id=rfq_id
         ))
 
-    # --------------------------------
+
     # GET RFQ QUOTES
-    # --------------------------------
+  
     cursor.execute("""
         SELECT *
         FROM quotes
