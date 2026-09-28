@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="{{ url_for('products') }}" class="back">
+    ← Back to Products
+</a>
+
+<h1>RFQ #{{ rfq.id }}</h1>
+
+<div class="rfq-details card">
+
+    <h2>{{ rfq.product_name }}</h2>
+
+    <div class="details-grid">
+        <div>
+            <strong>Buyer</strong>
+            <p>{{ rfq.buyer_name }}</p>
+        </div>
+
+        <div>
+            <strong>Quantity</strong>
+            <p>{{ rfq.quantity }} {{ rfq.unit }}</p>
+        </div>
+
+        <div>
+            <strong>Delivery City</strong>
+            <p>{{ rfq.delivery_city }}</p>
+        </div>
+
+        <div>
+            <strong>Category</strong>
+            <p>{{ rfq.category }}</p>
+        </div>
+    </div>
+
+    {% if rfq.notes %}
+    <div>
+        <strong>Notes</strong>
+        <p>{{ rfq.notes }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+
+<div class="two-column">
+
+    <div class="card">
+
+        <h2>Add Supplier Quote</h2>
+
+        {% if errors %}
+        <div class="error">
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label>Supplier Name</label>
+            <input
+                type="text"
+                name="supplier_name"
+                value="{{ form.get('supplier_name', '') }}"
+            >
+
+            <label>Unit Price (Rs.)</label>
+            <input
+                type="number"
+                name="unit_price"
+                step="0.01"
+                min="0.01"
+                value="{{ form.get('unit_price', '') }}"
+            >
+
+            <label>Delivery Days</label>
+            <input
+                type="number"
+                name="delivery_days"
+                min="1"
+                value="{{ form.get('delivery_days', '') }}"
+            >
+
+            <button type="submit" class="btn">
+                Submit Quote
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div>
+
+        <h2>Supplier Quotes</h2>
+
+        {% if quotes %}
+
+        {% for quote in quotes %}
+
+        <div class="quote card">
+
+            <div>
+                <h3>{{ quote.supplier_name }}</h3>
+                <p>{{ quote.delivery_days }} days delivery</p>
+            </div>
+
+            <div class="price">
+                <strong>Rs. {{ "%.2f"|format(quote.unit_price) }}</strong>
+
+                {% if loop.first %}
+                    <span class="best-price">Best Price</span>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <div class="empty">
+            No quotes yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

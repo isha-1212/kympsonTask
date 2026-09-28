@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <h1>Raise RFQ</h1>
+
+    {% if errors %}
+    <div class="error">
+        {% for error in errors %}
+            <div>{{ error }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>Buyer Name</label>
+        <input
+            type="text"
+            name="buyer_name"
+            value="{{ form.get('buyer_name', '') }}"
+        >
+
+        <label>Product</label>
+        <select name="product_id">
+
+            <option value="">Select product</option>
+
+            {% for product in products %}
+            <option
+                value="{{ product.id }}"
+                {% if form.get('product_id')|string == product.id|string %}
+                    selected
+                {% endif %}
+            >
+                {{ product.name }}
+            </option>
+            {% endfor %}
+
+        </select>
+
+        <label>Quantity</label>
+        <input
+            type="number"
+            name="quantity"
+            min="1"
+            value="{{ form.get('quantity', '') }}"
+        >
+
+        <label>Delivery City</label>
+        <input
+            type="text"
+            name="delivery_city"
+            value="{{ form.get('delivery_city', '') }}"
+        >
+
+        <label>Notes <span>(optional)</span></label>
+        <textarea name="notes">{{ form.get('notes', '') }}</textarea>
+
+        <button type="submit" class="btn">
+            Create RFQ
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

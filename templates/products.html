@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Packaging Products</h1>
+        <p>Raise a request for quotation for packaging products.</p>
+    </div>
+
+    <a href="{{ url_for('new_rfq') }}" class="btn">
+        + Raise RFQ
+    </a>
+</div>
+
+<div class="product-grid">
+
+    {% for product in products %}
+    <div class="card">
+        <span class="category">{{ product.category }}</span>
+
+        <h3>{{ product.name }}</h3>
+
+        <p>Unit: {{ product.unit }}</p>
+
+        <a
+            href="{{ url_for('new_rfq') }}?product_id={{ product.id }}"
+            class="btn secondary"
+        >
+            Raise RFQ
+        </a>
+    </div>
+    {% endfor %}
+
+</div>
+
+<section>
+    <h2>Existing RFQs</h2>
+
+    {% if rfqs %}
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Buyer</th>
+                    <th>City</th>
+                    <th>Quotes</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for rfq in rfqs %}
+                <tr>
+                    <td>{{ rfq.product_name }}</td>
+                    <td>{{ rfq.buyer_name }}</td>
+                    <td>{{ rfq.delivery_city }}</td>
+                    <td>{{ rfq.quote_count }}</td>
+                    <td>
+                        <a href="{{ url_for('rfq_detail', rfq_id=rfq.id) }}">
+                            View RFQ
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+        No RFQs yet.
+    </div>
+
+    {% endif %}
+</section>
+
+{% endblock %}
